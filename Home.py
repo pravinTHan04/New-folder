@@ -1,21 +1,30 @@
 import streamlit as st
-import os
 import openai 
+import os
 
-# get the value of the environment variable named "HOME"
+# Set up the OpenAI API key
 openai.api_key = os.getenv("OPENAI_API_KEY")
-st.write("Hello world")
-name = st.text_input("Enter your name: ")
-btn = st.button("sent")
-if btn:
-    st.write(name) 
+
+# Define a function to generate text using the OpenAI API
+def generate_text(prompt):
     response = openai.Completion.create(
                 model="text-davinci-003",
-                prompt=name,
+                prompt=prompt,
                 temperature=0.7,
                 max_tokens=256,
                 top_p=1,
                 frequency_penalty=0,
                 presence_penalty=0
                 )
-    st.write(response.choices[0].text)
+    return response.choices[0].text
+
+# Set up the Streamlit app
+st.title("OpenAI GPT-3 Text Generation")
+name = st.text_input("Enter your name: ")
+if st.button("Generate Text"):
+    with st.expander("Generated Text"):
+        if name:
+            text = generate_text(name)
+            st.write(text)
+        else:
+            st.write("Please enter a name.")
