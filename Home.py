@@ -18,4 +18,4 @@ if btn:
                 frequency_penalty=0,
                 presence_penalty=0
                 )
-    st.write(response)
+    st.write(response.choices[0].text)
